@@ -1,0 +1,64 @@
+services:
+  redis:
+    image: redis
+    container_name: kqueue_dev_redis
+    restart: unless-stopped
+    command: redis-server --requirepass ""
+    ports:
+      - 6379:6379
+    networks:
+      - kqueue_network
+
+  mongodb:
+    image: mongo
+    container_name: kqueue_dev_mongodb
+    restart: unless-stopped
+    ports:
+      - 27017:27017
+    volumes:
+      - kqueue_mongo_db_volume:/data/db
+    networks:
+      - kqueue_network
+
+  api:
+    build:
+      context: .
+      dockerfile: ./compose/Dockerfile
+    container_name: kqueue_dev_api
+    restart: unless-stopped
+    command: python main.py
+    ports:
+      - 8000:8000
+    volumes:
+      - ./:/usr/src/app
+    env_file:
+      - ./.env
+    depends_on:
+      - mongodb
+      - redis
+    networks:
+      - kqueue_network
+
+  celery_worker:
+    build:
+      context: .
+      dockerfile: ./compose/Dockerfile
+    container_name: celery_worker
+    restart: unless-stopped
+    command: celery -A workers.celery_worker.celery worker --loglevel=info
+    volumes:
+      - ./:/usr/src/app
+    env_file:
+      - ./.env
+    depends_on:
+      - api
+      - redis
+    networks:
+      - kqueue_network
+
+networks:
+  kqueue_network:
+    driver: bridge
+
+volumes:
+  kqueue_mongo_db_volume:

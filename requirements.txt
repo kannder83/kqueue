@@ -1,0 +1,9 @@
+autopep8==2.1.0
+fastapi==0.110.1
+uvicorn[standard]==0.29.0
+gunicorn==22.0.0
+mongoengine==0.28.2
+pydantic-settings==2.2.1
+celery==5.4.0
+redis==5.0.3
+starlette-admin==0.13.2
