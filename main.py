@@ -5,11 +5,9 @@ from config.conf import settings
 
 def main():
     """
-    Main
-    It runs a fastapi server
+    Main Function
     """
     if settings.mode_prod:
-        # run(f"gunicorn config.app:application -w {settings.workers} -b 0.0.0.0:8000 --worker-class uvicorn.workers.UvicornWorker".split(' '))
         run(f"gunicorn config.app:app -w {settings.workers} -b 0.0.0.0:8000 --worker-class uvicorn.workers.UvicornWorker".split(' '))
     else:
         uvicorn.run(

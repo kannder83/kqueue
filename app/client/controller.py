@@ -1,21 +1,21 @@
 
 import logging
-from app.client.models import Page
+from app.client.models import Client
 
 
-class DbPage():
+class DbClient():
     """
     """
 
-    def create_page(self, page_dict: dict) -> str:
+    def create_client(self, client_dict: dict) -> str:
         try:
-            logging.debug(f"page_dict: {page_dict}")
-            page = Page(**page_dict)
-            page.save()
-            return page.to_dict()
+            logging.debug(f"page_dict: {client_dict}")
+            client = Client(**client_dict)
+            client.save()
+            return client.to_dict()
         except Exception as error:
-            logging.error(f"create_page - {error}")
+            logging.error(f"create_client - {error}")
             return f"{error}"
 
 
-db_page = DbPage()
+db_client = DbClient()

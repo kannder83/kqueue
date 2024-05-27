@@ -11,7 +11,7 @@ from starlette_admin import CustomView
 
 
 # Models
-from app.client.models import Page
+from app.client.models import Client
 
 
 @asynccontextmanager
@@ -56,11 +56,11 @@ admin = Admin(title="KQueue")
 
 
 class UserView(ModelView):
-    fields_default_sort = [(Page.title, True)]
+    fields_default_sort = [(Client.name, True)]
 
 
 # Views
-admin.add_view(UserView(Page, icon="fa fa-users"))
+admin.add_view(UserView(Client, icon="fa fa-users"))
 # admin.add_view(UserView(Tag, icon="fa fa-users"))
 admin.add_view(CustomView(
     label="Home",

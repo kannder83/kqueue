@@ -5,8 +5,8 @@ import logging
 # Libraries
 from mongoengine import *
 from fastapi import APIRouter, HTTPException, status, Depends
-from app.client.models import Page, CreatePage
-from app.client.controller import db_page
+from app.client.models import Client, CreateClient
+from app.client.controller import db_client
 
 router: APIRouter = APIRouter(
     tags=["Client"],
@@ -25,8 +25,8 @@ async def get_clients():
     logging.debug("All is working!")
 
     all_data: list = []
-    for page in Page.objects():
-        all_data.append(page.to_dict())
+    for client in Client.objects():
+        all_data.append(client.to_dict())
 
     return {
         "msg": "All is working!",
@@ -39,13 +39,13 @@ async def get_clients():
     status_code=status.HTTP_200_OK,
     summary="Create client"
 )
-async def get_home(data: CreatePage):
+async def post_client(data: CreateClient):
     """
     """
-    new_page = db_page.create_page(data.model_dump())
-    if not isinstance(new_page, str):
+    new_client = db_client.create_page(data.model_dump())
+    if not isinstance(new_client, str):
         raise HTTPException(
             status_code=status.HTTP_400_BAD_REQUEST, detail="No se pudo crear")
     return {
-        "new_page": new_page
+        "new_client": new_client
     }

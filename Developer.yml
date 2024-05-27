@@ -45,7 +45,7 @@ services:
       dockerfile: ./compose/Dockerfile
     container_name: celery_worker
     restart: unless-stopped
-    command: celery -A workers.celery_worker.celery worker --loglevel=info
+    command: celery -A workers.main_worker.celery worker --loglevel=info
     volumes:
       - ./:/usr/src/app
     env_file:
