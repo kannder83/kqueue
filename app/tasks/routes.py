@@ -13,6 +13,13 @@ router: APIRouter = APIRouter(
 )
 
 
+@router.get("/")
+def get_task():
+    return {
+        "hi this": "Task Information"
+    }
+
+
 @router.post("/")
 def run_task(data: dict):
     time = int(data["time"])

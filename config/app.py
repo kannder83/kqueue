@@ -9,9 +9,12 @@ from fastapi.middleware.cors import CORSMiddleware
 from starlette_admin.contrib.mongoengine import Admin, ModelView
 from starlette_admin import CustomView
 
+from fastapi import FastAPI
 
 # Models
 from app.client.models import Client
+from app.client.routes import router as client_router
+from app.tasks.routes import router as task_router
 
 
 @asynccontextmanager
@@ -44,10 +47,17 @@ middleware = [
     )
 ]
 
-app = Starlette(
+# app = Starlette(
+#     lifespan=app_lifespan,
+#     middleware=middleware
+# )
+app = FastAPI(
     lifespan=app_lifespan,
     middleware=middleware
 )
+
+app.include_router(client_router)
+app.include_router(task_router)
 
 # Create admin
 admin = Admin(title="KQueue")
@@ -74,4 +84,4 @@ admin.add_view(CustomView(
 admin.mount_to(app)
 
 # Mount fastapi to app
-app.mount(path="/api/v1", app=fastapi_app)
+# app.mount(path="/api/v1", app=fastapi_app)
